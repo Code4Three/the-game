@@ -8,7 +8,7 @@ const options = {
   xStart: 150,
   yStart: 150,
   jump: 10,
-  speed: 500,
+  speed: 1000,
   maxSpeed: 100,
   //Food
   foodTime: 10000,
