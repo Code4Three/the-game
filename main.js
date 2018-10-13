@@ -34,13 +34,13 @@ function setup() {
   snake1.body.push(head);
 
   //create gameover div
-  const gameOver = board.appendChild(document.createElement('div'));
-  gameOver.classList.add('gameOver');
-  gameOver.style.visibility = 'hidden';
-  gameOver.innerHTML = 'GAME OVER';
+  const gameOver = board.appendChild(document.createElement("div"));
+  gameOver.classList.add("gameOver");
+  gameOver.style.visibility = "hidden";
+  gameOver.innerHTML = "GAME OVER";
 }
 
-//***************************SNAKE**********************/
+/***************************SNAKE**********************/
 class snake {
   constructor() {
     this.body = [];
@@ -59,8 +59,7 @@ class snake {
       case "w":
         if (y == 0) {
           y = options.yBoard - options.jump;
-        }
-        else{
+        } else {
           y -= options.jump;
         }
         head.style.top = `${y}px`; //move head
@@ -70,8 +69,7 @@ class snake {
       case "s":
         if (y == options.yBoard - options.jump) {
           y = 0;
-        }
-        else{
+        } else {
           y += options.jump;
         }
         head.style.top = `${y}px`; //move head
@@ -81,8 +79,7 @@ class snake {
       case "a":
         if (x == 0) {
           x = options.xBoard - options.jump;
-        }
-        else{
+        } else {
           x -= options.jump;
         }
         head.style.left = `${x}px`; //move head
@@ -92,8 +89,7 @@ class snake {
       case "d":
         if (x == options.xBoard - options.jump) {
           x = 0;
-        }
-        else{
+        } else {
           x += options.jump;
         }
         head.style.left = `${x}px`; //move head
@@ -104,11 +100,14 @@ class snake {
     }
 
     const gameOver = this.checkBumpedHead();
-    if(!gameOver){
-      const moveTimer = window.setTimeout(() => snake1.move.call(snake1), options.speed);
-    }
-    else{
-      document.querySelector('.gameOver').style.visibility = 'visible';
+    if (!gameOver) {
+      const moveTimer = window.setTimeout(
+        () => snake1.move.call(snake1),
+        options.speed
+      );
+    } else {
+      document.querySelector(".gameOver").style.visibility = "visible";
+      clearInterval(foodTimer);
     }
 
     //move body
@@ -145,20 +144,18 @@ class snake {
   }
 
   checkBumpedHead() {
-    console.log('************************');
     const gameOver = 0;
-    
-    this.body.forEach(body => {
-      console.log('head top ' + this.body[0].style.top);
-      console.log('body top ' + body.style.top);
-      console.log('************************');
 
-      if(body.className != 'head'){
-        if(this.body[0].style.top == body.style.top && this.body[0].style.left == body.style.left){
+    this.body.forEach(body => {
+      if (body.className != "head") {
+        if (
+          this.body[0].style.top == body.style.top &&
+          this.body[0].style.left == body.style.left
+        ) {
           this.gameOver = 1;
         }
       }
-    })
+    });
     return this.gameOver;
   }
 
@@ -188,11 +185,6 @@ class snake {
     if (options.maxFoods < options.maxMaxFoods) {
       options.maxFoods += options.foodMult;
     }
-
-    console.log("speed " + options.speed);
-    console.log("maxSpeed " + options.speed);
-    console.log("foodTime " + options.foodTime);
-    console.log("maxFoods " + options.maxFoods);
   }
 
   steer(e) {
@@ -245,12 +237,13 @@ class food {
 
 const snake1 = new snake();
 const foods = new food();
+const foodTimer = window.setInterval(
+  () => foods.addFood.call(foods),
+  options.foodTime
+);
 
 setup();
 foods.addFood();
 snake1.move();
-//window.setTimeout(() => snake1.move.call(snake1), options.speed);
-//window.setInterval(() => snake1.grow.call(snake1), 2000);
-const foodTimer = window.setInterval(() => foods.addFood.call(foods), options.foodTime);
 
 window.addEventListener("keydown", snake1.steer);
